@@ -1,0 +1,89 @@
+// Copyright 2016 Martijn Croonen. All rights reserved.
+// Use of this source code is governed by the MIT license, a copy of which can
+// be found in the LICENSE file.
+
+package ece
+
+import (
+	"crypto/rand"
+	"crypto/sha256"
+	"encoding/binary"
+	"io"
+
+	"golang.org/x/crypto/hkdf"
+)
+
+// EncryptionKeys contains the salt, (optional) auth, encryption key, and nonce.
+type EncryptionKeys struct {
+	preSharedAuth []byte
+	cek           []byte
+	nonce         []byte
+	salt          []byte
+}
+
+// SetPreSharedAuthSecret sets the (optional) pre-shared authentication secret that
+// is to be used during key derivation.
+func (ek *EncryptionKeys) SetPreSharedAuthSecret(preSharedAuthSecret []byte) {
+	ek.preSharedAuth = preSharedAuthSecret
+}
+
+// GetSalt returns the generated salt.
+func (ek *EncryptionKeys) GetSalt() []byte {
+	return ek.salt
+}
+
+// CreateEncryptionKeys derives the encryption key and nonce from the input keying
+// material.
+func (ek *EncryptionKeys) CreateEncryptionKeys(secret []byte, context []byte) {
+	if ek.salt == nil || len(ek.salt) != 16 {
+		ek.salt = make([]byte, 16)
+		rand.Read(ek.salt)
+	}
+
+	cekInfo := buildInfoData("Content-Encoding: aesgcm128", context)
+	nonceInfo := buildInfoData("Content-Encoding: nonce", context)
+	authInfo := []byte("Content-Encoding: auth\x00")
+
+	var prk []byte
+	if len(ek.preSharedAuth) == 0 {
+		prk = secret
+	} else {
+		prk = readHKDF(secret, ek.preSharedAuth, authInfo, 32)
+	}
+
+	ek.cek = readHKDF(prk, ek.salt, cekInfo, 16)
+	ek.nonce = readHKDF(prk, ek.salt, nonceInfo, 12)
+}
+
+// BuildDHContext builds the context from the Diffie-Hellman keys that is needed
+// to derive the encryption key and nonce.
+// https://tools.ietf.org/html/draft-ietf-httpbis-encryption-encoding-00#section-4.2
+func BuildDHContext(clientPublic []byte, serverPublic []byte) []byte {
+	var b []byte
+	b = append(b, '\x00')
+	b = append(b, "P-256"...)
+	b = append(b, '\x00')
+
+	length := make([]byte, 2)
+	binary.BigEndian.PutUint16(length, uint16(len(clientPublic)))
+	b = append(b, length...)
+	b = append(b, clientPublic...)
+
+	binary.BigEndian.PutUint16(length, uint16(len(serverPublic)))
+	b = append(b, length...)
+	return append(b, serverPublic...)
+}
+
+// buildInfoData Merges label and context.
+func buildInfoData(label string, context []byte) []byte {
+	b := []byte(label)
+	return append(b, context...)
+}
+
+// readHDKF runs hkdf (SHA-256) with the provided inputs and reads |length| bytes.
+func readHKDF(secret, salt, info []byte, length int) []byte {
+	hkdf := hkdf.New(sha256.New, secret, salt, info)
+	output := make([]byte, length)
+	io.ReadFull(hkdf, output)
+	return output
+}
