@@ -5,6 +5,7 @@
 package ece
 
 import (
+	"bytes"
 	"crypto/rand"
 	"crypto/sha256"
 	"encoding/binary"
@@ -57,19 +58,13 @@ func (ek *EncryptionKeys) CreateEncryptionKeys(secret []byte, context []byte) {
 // to derive the encryption key and nonce.
 // https://tools.ietf.org/html/draft-ietf-httpbis-encryption-encoding-00#section-4.2
 func BuildDHContext(clientPublic []byte, serverPublic []byte) []byte {
-	var b []byte
-	b = append(b, '\x00')
-	b = append(b, "P-256"...)
-	b = append(b, '\x00')
-
-	length := make([]byte, 2)
-	binary.BigEndian.PutUint16(length, uint16(len(clientPublic)))
-	b = append(b, length...)
-	b = append(b, clientPublic...)
-
-	binary.BigEndian.PutUint16(length, uint16(len(serverPublic)))
-	b = append(b, length...)
-	return append(b, serverPublic...)
+	var buffer bytes.Buffer
+	buffer.Write([]byte("\x00P-256\x00"))
+	binary.Write(&buffer, binary.BigEndian, uint16(len(clientPublic)))
+	buffer.Write(clientPublic)
+	binary.Write(&buffer, binary.BigEndian, uint16(len(serverPublic)))
+	buffer.Write(serverPublic)
+	return buffer.Bytes()
 }
 
 // buildInfoData Merges label and context.
