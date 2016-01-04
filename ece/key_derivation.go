@@ -20,6 +20,7 @@ type EncryptionKeys struct {
 	cek           []byte
 	nonce         []byte
 	salt          []byte
+	isTest        bool
 }
 
 // SetPreSharedAuthSecret sets the (optional) pre-shared authentication secret that
@@ -41,7 +42,9 @@ func (ek *EncryptionKeys) CreateEncryptionKeys(secret []byte, context []byte) {
 	authInfo := []byte("Content-Encoding: auth\x00")
 
 	// Generate new salt
-	ek.salt = generateSalt()
+	if !(ek.isTest && len(ek.salt) == 16) {
+		ek.salt = generateSalt()
+	}
 
 	var prk []byte
 	if len(ek.preSharedAuth) == 0 {

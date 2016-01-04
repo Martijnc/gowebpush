@@ -18,6 +18,7 @@ func TestKeyDerivationWithAuth(t *testing.T) {
 	sPub := b64("BO0wJzfKZR2CdYChw1t/KnvzJ2I2giZyzaHxBJwAPUk+SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT/s0U=")
 	context := BuildDHContext(rPub, sPub)
 
+	keys.isTest = true
 	keys.salt = b64("kpN5uzoW8oaYM5E0Ti81Ew==")
 	keys.preSharedAuth = b64("ezkGueTeNe/72r3dZJ2V4A==")
 
@@ -43,6 +44,7 @@ func TestKeyDerivationWithoutAuth(t *testing.T) {
 	rPub := b64("BCEkBjzL8Z3C+oi2Q7oE5t2Np+p7osjGLg93qUP0wvqRT21EEWyf0cQDQcakQMqz4hQKYOQ3il2nNZct4HgAUQU=")
 	context := BuildDHContext(rPub, sPub)
 
+	keys.isTest = true
 	keys.salt = b64("Qg61ZJRva/XBE9IEUelU3A==")
 	keys.preSharedAuth = []byte{}
 
