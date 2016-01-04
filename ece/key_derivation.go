@@ -35,14 +35,12 @@ func (ek *EncryptionKeys) GetSalt() []byte {
 // CreateEncryptionKeys derives the encryption key and nonce from the input keying
 // material.
 func (ek *EncryptionKeys) CreateEncryptionKeys(secret []byte, context []byte) {
-	if ek.salt == nil || len(ek.salt) != 16 {
-		ek.salt = make([]byte, 16)
-		rand.Read(ek.salt)
-	}
-
 	cekInfo := buildInfoData("Content-Encoding: aesgcm128", context)
 	nonceInfo := buildInfoData("Content-Encoding: nonce", context)
 	authInfo := []byte("Content-Encoding: auth\x00")
+
+	// Generate new salt
+	ek.salt = generateSalt()
 
 	var prk []byte
 	if len(ek.preSharedAuth) == 0 {
@@ -86,4 +84,11 @@ func readHKDF(secret, salt, info []byte, length int) []byte {
 	output := make([]byte, length)
 	io.ReadFull(hkdf, output)
 	return output
+}
+
+// GenerateSalt generates 16 (cryptographically secure) random bytes to be used as salt.
+func generateSalt() []byte {
+	salt := make([]byte, 16)
+	rand.Read(salt)
+	return salt
 }
