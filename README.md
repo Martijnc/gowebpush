@@ -1,3 +1,4 @@
+![CI Status](https://travis-ci.org/Martijnc/gowebpush.svg?branch=master)
 # Go Web Push
 Go package for implementing Encrypted Content-Encoding for Web Push.
 
