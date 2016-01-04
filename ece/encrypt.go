@@ -16,6 +16,7 @@ func Encrypt(plaintext []byte, keys *EncryptionKeys, paddingLength int) ([]byte,
 	if paddingLength < 0 || paddingLength > 255 {
 		return nil, errors.New("Padding should be between 0 and 256.")
 	}
+
 	aes, err := aes.NewCipher(keys.cek)
 	if err != nil {
 		return nil, err
@@ -26,15 +27,9 @@ func Encrypt(plaintext []byte, keys *EncryptionKeys, paddingLength int) ([]byte,
 		return nil, err
 	}
 
-	record := make([]byte, 1)
-	if paddingLength == 0 {
-		record[0] = '\x00'
-	} else {
-		record[0] = byte(paddingLength)
-	}
-	padding := make([]byte, paddingLength)
-	record = append(record, padding...)
-	record = append(record, plaintext...)
+	record := make([]byte, 1+paddingLength+len(plaintext))
+	record[0] = byte(paddingLength)
+	copy(record[1+paddingLength:], plaintext)
 
 	var auth []byte
 	return aesgcm.Seal(nil, keys.nonce, record, auth), nil
