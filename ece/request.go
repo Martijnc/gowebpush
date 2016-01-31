@@ -36,8 +36,9 @@ func CreateRequest(client http.Client, url string, data []byte, cryptoKey *Crypt
 	if !strings.Contains(url, "google") {
 		r.Header.Add("Content-Encoding", "aesgcm128")
 		r.Header.Add("Encryption-Key", cryptoKey.toString())
+	} else {
+		r.Header.Add("Crypto-Key", cryptoKey.toString())
 	}
-	r.Header.Add("Crypto-Key", cryptoKey.toString())
 	r.Header.Add("Encryption", encryption.toString())
 
 	return r
