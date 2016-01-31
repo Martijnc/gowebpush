@@ -15,9 +15,9 @@ import (
 // CryptoKeyHeader is a small struct that can be used to define the values in
 // the "Crypto-Key" header. https://tools.ietf.org/html/draft-ietf-httpbis-encryption-encoding-00#section-4
 type CryptoKeyHeader struct {
-	keyid     string
-	aesgcm128 string
-	dh        string
+	keyid  string
+	aesgcm string
+	dh     string
 }
 
 // EncryptionHeader is a small struct that can be used to define the values in
@@ -34,7 +34,7 @@ func CreateRequest(client http.Client, url string, data []byte, cryptoKey *Crypt
 	r, _ := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	// Required by Firefox' push server but breaks Chrome's push server.
 	if !strings.Contains(url, "google") {
-		r.Header.Add("Content-Encoding", "aesgcm128")
+		r.Header.Add("Content-Encoding", "aesgcm")
 		r.Header.Add("Encryption-Key", cryptoKey.toString())
 	}
 	r.Header.Add("Crypto-Key", cryptoKey.toString())
@@ -52,7 +52,7 @@ func (ckh *CryptoKeyHeader) SetDHKey(publicKey []byte) {
 // SetExplicitKey sets the explicit encryption key.
 // https://tools.ietf.org/html/draft-ietf-httpbis-encryption-encoding-00#section-4.1
 func (ckh *CryptoKeyHeader) SetExplicitKey(key []byte) {
-	ckh.aesgcm128 = base64.URLEncoding.EncodeToString(key)
+	ckh.aesgcm = base64.URLEncoding.EncodeToString(key)
 }
 
 // SetKeyID sets the keyid.
@@ -70,8 +70,8 @@ func (ckh *CryptoKeyHeader) toString() string {
 	if len(ckh.dh) != 0 {
 		output += fmt.Sprintf("dh=%s;", ckh.dh)
 	}
-	if len(ckh.aesgcm128) != 0 {
-		output += fmt.Sprintf("aesgcm=%s;", ckh.aesgcm128)
+	if len(ckh.aesgcm) != 0 {
+		output += fmt.Sprintf("aesgcm=%s;", ckh.aesgcm)
 	}
 	return output
 }

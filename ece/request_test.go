@@ -35,10 +35,10 @@ func TestEncryptionHeaderToString(t *testing.T) {
 
 func TestCryptoKeyHeaderToString(t *testing.T) {
 	var referenceTests = []struct {
-		keyid     string
-		dh        string
-		aesgcm128 string
-		expected  string
+		keyid    string
+		dh       string
+		aesgcm   string
+		expected string
 	}{
 		{"dhkey", "dh", "p4oN_dLo5iM8wCva", "keyid=dhkey;dh=dh;aesgcm=p4oN_dLo5iM8wCva;"},
 		{"", "BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U", "xl1_N9ZH1YhzUFpi4sA4lA", "dh=BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U;aesgcm=xl1_N9ZH1YhzUFpi4sA4lA;"},
@@ -51,7 +51,7 @@ func TestCryptoKeyHeaderToString(t *testing.T) {
 	for _, tt := range referenceTests {
 		header.keyid = tt.keyid
 		header.dh = tt.dh
-		header.aesgcm128 = tt.aesgcm128
+		header.aesgcm = tt.aesgcm
 
 		result = header.toString()
 		if result != tt.expected {
