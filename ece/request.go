@@ -71,7 +71,7 @@ func (ckh *CryptoKeyHeader) toString() string {
 		output += fmt.Sprintf("dh=%s;", ckh.dh)
 	}
 	if len(ckh.aesgcm128) != 0 {
-		output += fmt.Sprintf("aesgcm128=%s;", ckh.aesgcm128)
+		output += fmt.Sprintf("aesgcm=%s;", ckh.aesgcm128)
 	}
 	return output
 }
