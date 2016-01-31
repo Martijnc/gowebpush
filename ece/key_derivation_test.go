@@ -24,7 +24,7 @@ func TestKeyDerivationWithAuth(t *testing.T) {
 
 	keys.CreateEncryptionKeys(secret, context)
 
-	cek := b64("xl1/N9ZH1YhzUFpi4sA4lA==")
+	cek := b64("/FzVZ2f0d6HU3PigqCFngA==")
 	nonce := b64("p4oN/dLo5iM8wCva")
 
 	if bytes.Compare(keys.nonce, nonce) != 0 {
@@ -50,7 +50,7 @@ func TestKeyDerivationWithoutAuth(t *testing.T) {
 
 	keys.CreateEncryptionKeys(secret, context)
 
-	cek := b64("NaSfkLQbZSE50BEYen1hFw==")
+	cek := b64("zsDs+WYrUwwwcDj1VGOo/g==")
 	nonce := b64("RYRffTtExv5u4KY3")
 
 	if bytes.Compare(keys.nonce, nonce) != 0 {

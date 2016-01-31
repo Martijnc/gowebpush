@@ -40,10 +40,10 @@ func TestCryptoKeyHeaderToString(t *testing.T) {
 		aesgcm128 string
 		expected  string
 	}{
-		{"dhkey", "dh", "p4oN_dLo5iM8wCva", "keyid=dhkey;dh=dh;aesgcm128=p4oN_dLo5iM8wCva;"},
-		{"", "BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U", "xl1_N9ZH1YhzUFpi4sA4lA", "dh=BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U;aesgcm128=xl1_N9ZH1YhzUFpi4sA4lA;"},
-		{"testkey", "", "xl1_N9ZH1YhzUFpi4sA4lA", "keyid=testkey;aesgcm128=xl1_N9ZH1YhzUFpi4sA4lA;"},
-		{"", "BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U", "p4oN_dLo5iM8wCva", "dh=BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U;aesgcm128=p4oN_dLo5iM8wCva;"},
+		{"dhkey", "dh", "p4oN_dLo5iM8wCva", "keyid=dhkey;dh=dh;aesgcm=p4oN_dLo5iM8wCva;"},
+		{"", "BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U", "xl1_N9ZH1YhzUFpi4sA4lA", "dh=BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U;aesgcm=xl1_N9ZH1YhzUFpi4sA4lA;"},
+		{"testkey", "", "xl1_N9ZH1YhzUFpi4sA4lA", "keyid=testkey;aesgcm=xl1_N9ZH1YhzUFpi4sA4lA;"},
+		{"", "BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U", "p4oN_dLo5iM8wCva", "dh=BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U;aesgcm=p4oN_dLo5iM8wCva;"},
 	}
 
 	var header CryptoKeyHeader
