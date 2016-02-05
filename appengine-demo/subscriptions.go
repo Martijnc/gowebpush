@@ -83,7 +83,7 @@ func sendPushMessage(endpoint string, p256dh, auth []byte, message string, conte
 
 	// Create the ECE request.
 	client := urlfetch.Client(*context)
-	r := ece.CreateRequest(*client, prepareEndpoint(endpoint), ciphertext, &ckh, &eh)
+	r := ece.CreateRequest(*client, prepareEndpoint(endpoint), ciphertext, &ckh, &eh, 600)
 	if strings.Contains(endpoint, "google") {
 		r.Header.Add("Authorization", "key=AIzaSyBopqMP1DH7zbT0IyoKIzTAtBAZQPNN6oY")
 	}

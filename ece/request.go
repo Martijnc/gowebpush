@@ -9,6 +9,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"net/http"
+	"strconv"
 	"strings"
 )
 
@@ -30,7 +31,7 @@ type EncryptionHeader struct {
 
 // CreateRequest creates a new http.Request with the ECE headers set correctly based on the
 // |cryptoKey| and |encryption| parameters.
-func CreateRequest(client http.Client, url string, data []byte, cryptoKey *CryptoKeyHeader, encryption *EncryptionHeader) *http.Request {
+func CreateRequest(client http.Client, url string, data []byte, cryptoKey *CryptoKeyHeader, encryption *EncryptionHeader, ttl int) *http.Request {
 	r, _ := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	// Required by Firefox' push server but breaks Chrome's push server.
 	if !strings.Contains(url, "google") {
@@ -40,6 +41,7 @@ func CreateRequest(client http.Client, url string, data []byte, cryptoKey *Crypt
 		r.Header.Add("Crypto-Key", cryptoKey.toString())
 	}
 	r.Header.Add("Encryption", encryption.toString())
+	r.Header.Add("TTL", strconv.Itoa(ttl))
 
 	return r
 }
