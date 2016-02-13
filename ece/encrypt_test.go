@@ -17,8 +17,8 @@ func TestEncrypt(t *testing.T) {
 		plaintext  string
 		ciphertext string
 	}{
-		{"NaSfkLQbZSE50BEYen1hFw==", "RYRffTtExv5u4KY3", "I am the walrus", "G6j/sfKg0qebO62yXpTCayN2KV24QitNiTvLgcFiEj0="},
-		{"xl1/N9ZH1YhzUFpi4sA4lA==", "p4oN/dLo5iM8wCva", "This is part of a test", "I7hAhx9CxXh/Lm0Vz6/Nbxny6B41QBA9rsgSc2WXsZO4NjWhaDCb"},
+		{"NaSfkLQbZSE50BEYen1hFw==", "RYRffTtExv5u4KY3", "I am the walrus", "G+GW8P7thruWfvqkU4rFbTvCs8rn13QmTR1cuIE3NFbv"},
+		{"xl1/N9ZH1YhzUFpi4sA4lA==", "p4oN/dLo5iM8wCva", "This is part of a test", "I+x8hgURjGIsfnwGyfuCZl+zqUokVhdvRZeKXLcN/NXucGwzabswRA=="},
 	}
 
 	var keys EncryptionKeys

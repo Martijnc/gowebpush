@@ -7,14 +7,15 @@ package ece
 import (
 	"crypto/aes"
 	"crypto/cipher"
+	"encoding/binary"
 	"errors"
 )
 
 // Encrypt encrypts |plaintext| using AEAD_AES_GCM_128 with the keys in |keys|
 // adding |paddingLength| bytes of padding.
 func Encrypt(plaintext []byte, keys *EncryptionKeys, paddingLength int) ([]byte, error) {
-	if paddingLength < 0 || paddingLength > 255 {
-		return nil, errors.New("Padding should be between 0 and 256.")
+	if paddingLength < 0 || paddingLength > 65535 {
+		return nil, errors.New("Padding should be between 0 and 65535.")
 	}
 
 	aes, err := aes.NewCipher(keys.cek)
@@ -27,9 +28,9 @@ func Encrypt(plaintext []byte, keys *EncryptionKeys, paddingLength int) ([]byte,
 		return nil, err
 	}
 
-	record := make([]byte, 1+paddingLength+len(plaintext))
-	record[0] = byte(paddingLength)
-	copy(record[1+paddingLength:], plaintext)
+	record := make([]byte, 2+paddingLength+len(plaintext))
+	binary.BigEndian.PutUint16(record, uint16(paddingLength))
+	copy(record[2+paddingLength:], plaintext)
 
 	var auth []byte
 	return aesgcm.Seal(nil, keys.nonce, record, auth), nil

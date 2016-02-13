@@ -37,7 +37,7 @@ func (ek *EncryptionKeys) GetSalt() []byte {
 // CreateEncryptionKeys derives the encryption key and nonce from the input keying
 // material.
 func (ek *EncryptionKeys) CreateEncryptionKeys(secret []byte, context []byte) {
-	cekInfo := buildInfoData("Content-Encoding: aesgcm128", context)
+	cekInfo := buildInfoData("Content-Encoding: aesgcm", context)
 	nonceInfo := buildInfoData("Content-Encoding: nonce", context)
 	authInfo := []byte("Content-Encoding: auth\x00")
 
