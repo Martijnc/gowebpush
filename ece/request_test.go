@@ -13,10 +13,10 @@ func TestEncryptionHeaderToString(t *testing.T) {
 		rs       int
 		expected string
 	}{
-		{"dhkey", "RYRffTtExv5u4KY3", 23, "keyid=dhkey;rs=23;salt=RYRffTtExv5u4KY3;"},
-		{"", "p4oN/dLo5iM8wCva", 0, "salt=p4oN/dLo5iM8wCva;"},
-		{"testkey", "", 0, "keyid=testkey;"},
-		{"salt", "salt", 300, "keyid=salt;rs=300;salt=salt;"},
+		{"dhkey", "RYRffTtExv5u4KY3", 23, "keyid=dhkey;rs=23;salt=RYRffTtExv5u4KY3"},
+		{"", "p4oN/dLo5iM8wCva", 0, "salt=p4oN/dLo5iM8wCva"},
+		{"testkey", "", 0, "keyid=testkey"},
+		{"salt", "salt", 300, "keyid=salt;rs=300;salt=salt"},
 	}
 
 	var header EncryptionHeader
@@ -40,10 +40,10 @@ func TestCryptoKeyHeaderToString(t *testing.T) {
 		aesgcm   string
 		expected string
 	}{
-		{"dhkey", "dh", "p4oN_dLo5iM8wCva", "keyid=dhkey;dh=dh;aesgcm=p4oN_dLo5iM8wCva;"},
-		{"", "BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U", "xl1_N9ZH1YhzUFpi4sA4lA", "dh=BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U;aesgcm=xl1_N9ZH1YhzUFpi4sA4lA;"},
-		{"testkey", "", "xl1_N9ZH1YhzUFpi4sA4lA", "keyid=testkey;aesgcm=xl1_N9ZH1YhzUFpi4sA4lA;"},
-		{"", "BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U", "p4oN_dLo5iM8wCva", "dh=BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U;aesgcm=p4oN_dLo5iM8wCva;"},
+		{"dhkey", "dh", "p4oN_dLo5iM8wCva", "keyid=dhkey;dh=dh;aesgcm=p4oN_dLo5iM8wCva"},
+		{"", "BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U", "xl1_N9ZH1YhzUFpi4sA4lA", "dh=BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U;aesgcm=xl1_N9ZH1YhzUFpi4sA4lA"},
+		{"testkey", "", "xl1_N9ZH1YhzUFpi4sA4lA", "keyid=testkey;aesgcm=xl1_N9ZH1YhzUFpi4sA4lA"},
+		{"", "BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U", "p4oN_dLo5iM8wCva", "dh=BO0wJzfKZR2CdYChw1t_KnvzJ2I2giZyzaHxBJwAPUk-SNowGIC1pY6DPWUc66IjQzS206BsXhaxvxAniVT_s0U;aesgcm=p4oN_dLo5iM8wCva"},
 	}
 
 	var header CryptoKeyHeader

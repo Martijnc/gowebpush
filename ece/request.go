@@ -61,17 +61,17 @@ func (ckh *CryptoKeyHeader) SetKeyID(keyID string) {
 
 // toString formats and returns the output string for the crypto-key header.
 func (ckh *CryptoKeyHeader) toString() string {
-	var output string
+	var items []string
 	if len(ckh.keyid) != 0 {
-		output += fmt.Sprintf("keyid=%s;", ckh.keyid)
+		items = append(items, fmt.Sprintf("keyid=%s", ckh.keyid))
 	}
 	if len(ckh.dh) != 0 {
-		output += fmt.Sprintf("dh=%s;", ckh.dh)
+		items = append(items, fmt.Sprintf("dh=%s", ckh.dh))
 	}
 	if len(ckh.aesgcm) != 0 {
-		output += fmt.Sprintf("aesgcm=%s;", ckh.aesgcm)
+		items = append(items, fmt.Sprintf("aesgcm=%s", ckh.aesgcm))
 	}
-	return output
+	return strings.Join(items, ";")
 }
 
 // SetSalt sets the encryption salt that should be used for key derivation.
@@ -93,15 +93,15 @@ func (eh *EncryptionHeader) SetKeyID(keyID string) {
 
 // toString formats and returns the output string for the encryption header.
 func (eh *EncryptionHeader) toString() string {
-	var output string
+	var items []string
 	if len(eh.keyid) != 0 {
-		output += fmt.Sprintf("keyid=%s;", eh.keyid)
+		items = append(items, fmt.Sprintf("keyid=%s", eh.keyid))
 	}
 	if eh.rs != 0 {
-		output += fmt.Sprintf("rs=%d;", eh.rs)
+		items = append(items, fmt.Sprintf("rs=%d", eh.rs))
 	}
 	if len(eh.salt) != 0 {
-		output += fmt.Sprintf("salt=%s;", eh.salt)
+		items = append(items, fmt.Sprintf("salt=%s", eh.salt))
 	}
-	return output
+	return strings.Join(items, ";")
 }
