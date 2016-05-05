@@ -60,13 +60,6 @@ func sendPushMessage(endpoint string, p256dh, auth []byte, message string, conte
 	encryptionContext := ece.BuildDHContext(rp.PublicKey, sp.PublicKey)
 	keys.SetPreSharedAuthSecret(auth)
 
-	// The current Firefox nightly build doesn't take the auth and context into account
-	// when decrypting the payload.
-	if strings.Contains(endpoint, "mozilla") {
-		encryptionContext = []byte{}
-		keys.SetPreSharedAuthSecret([]byte{})
-	}
-
 	// Derive the encryption key and nonce from the input keying material.
 	keys.CreateEncryptionKeys(secret, encryptionContext)
 
