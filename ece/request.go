@@ -34,15 +34,10 @@ type EncryptionHeader struct {
 func CreateRequest(client http.Client, url string, data []byte, cryptoKey *CryptoKeyHeader, encryption *EncryptionHeader, ttl int) *http.Request {
 	r, _ := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	// Required by Firefox' push server but breaks Chrome's push server.
-	if !strings.Contains(url, "google") {
-		r.Header.Add("Content-Encoding", "aesgcm")
-		r.Header.Add("Encryption-Key", cryptoKey.toString())
-	} else {
-		r.Header.Add("Crypto-Key", cryptoKey.toString())
-	}
+	r.Header.Add("Content-Encoding", "aesgcm")
+	r.Header.Add("Crypto-Key", cryptoKey.toString())
 	r.Header.Add("Encryption", encryption.toString())
 	r.Header.Add("TTL", strconv.Itoa(ttl))
-
 	return r
 }
 
